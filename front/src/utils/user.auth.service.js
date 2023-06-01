@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = `${process.env.REACT_APP_URI}`;
+// const url = `${process.env.REACT_APP_URI}`;
 
 export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
