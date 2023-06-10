@@ -1,0 +1,4 @@
+FROM openjdk:8
+EXPOSE 8761
+ADD /target/SpringEureka-Server-0.0.1-SNAPSHOT.jar SpringEureka-Server.jar
+ENTRYPOINT ["java", "-jar", "SpringEureka-Server.jar"]
