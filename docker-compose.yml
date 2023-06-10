@@ -1,0 +1,113 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    depends_on:
+      - auth
+      - forum
+      - chat
+      - task
+    networks:
+      - app-network
+
+  auth:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    ports:
+      - 8002:8002
+    depends_on:
+      - auth-db
+    networks:
+      - app-network
+
+  forum:
+    build:
+      context: ./forum
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8001
+    depends_on:
+      - forum-db
+    networks:
+      - app-network
+
+  chat:
+    build:
+      context: ./chat
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - chat-db
+    networks:
+      - app-network
+
+  task:
+    build:
+      context: ./task
+      dockerfile: Dockerfile
+    ports:
+      - 8004:8004
+    depends_on:
+      - task-db
+    networks:
+      - app-network
+
+  auth-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: auth-service
+    volumes:
+      - auth_postgres_data:/var/lib/postgresql/data/
+    networks:
+      - app-network
+
+  forum-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: forum-service
+    volumes:
+      - forum_postgres_data:/var/lib/postgresql/data/
+    networks:
+      - app-network
+
+  chat-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: chat-service
+    volumes:
+      - chat_postgres_data:/var/lib/postgresql/data/
+    networks:
+      - app-network
+
+  task-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: task-service
+    volumes:
+      - task_postgres_data:/var/lib/postgresql/data/
+    networks:
+      - app-network
+
+volumes:
+  auth_postgres_data:
+  forum_postgres_data:
+  chat_postgres_data:
+  task_postgres_data:
+
+networks:
+  app-network:
