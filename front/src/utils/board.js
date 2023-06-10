@@ -197,7 +197,7 @@ export const addCard = (board, setBoard) => (listId, newCard) => {
 };
 
 export const updateCard = (_, setBoard) => (listId, updatedCard) => {
-    console.log(updateCard)
+
     setBoard(board => {
         const targetList = board.lists.find((list) => list.id === listId);
         const newItems = targetList.items.map((item) =>

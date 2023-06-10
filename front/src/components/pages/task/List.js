@@ -42,7 +42,7 @@ export const mergeRefs = (...refs) => {
     };
 };
 
-export default function List({ list, index }) {
+export default function List({ list,members, index }) {
     const { board, setBoard } = useContext(globalContext);
   const [addingCard, setAddingCard] = useState(false);
   const [cardTitle, setCardTitle] = useState("");
@@ -137,6 +137,7 @@ export default function List({ list, index }) {
                                           card={card}
                                           list={list}
                                           index={index}
+                                          members={members}
                                           key={uuidv4()}
                                       />
                                   ))}

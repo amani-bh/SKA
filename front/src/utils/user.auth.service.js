@@ -1,5 +1,5 @@
 import axios from "axios";
-// const url = `${process.env.REACT_APP_URI}`;
+const url = `${process.env.REACT_APP_URI}`;
 
 export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
@@ -22,6 +22,7 @@ try{
     );
     if(data!=undefined)
     axios.defaults.headers.common["Authorization"] = `Bearer ${data["token"]}`;
+    console.log(data)
     const res=await getUser()
     localStorage.setItem("user",JSON.stringify(res))
     return data;
@@ -89,6 +90,19 @@ export const getAllUsers = async (id) => {
 
   try {
       const {data}= await axios.get("http://localhost:8002/api/all_users/");
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  
+};
+
+export const findUsers = async (value) => {
+
+  try {
+      const {data}= await axios.get("http://localhost:8002/api/user_autocomplete/",{
+        params: { query: value },
+      });
       return data;
     } catch (error) {
       console.log(error);

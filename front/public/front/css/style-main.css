@@ -1,12 +1,44 @@
 @charset "UTF-8";
+/*----------------------------------------------------
+@File: Default Styles
 
+This file contains the styling for the actual template, this
+is the file you need to edit to change the look of the
+template.
+---------------------------------------------------- */
+/*=====================================================================
+@Template Name: Docy
+@Version: 1.1.2
+
+@Default Styles
+
+Table of Content:
+01/ Variables
+02/ predefine
+03/ header
+04/ banner
+05/ about
+06/ portfolio
+07/ team
+08/ blog
+09/ service
+10/ blog
+11/ contact 
+12/ footer 
+
+
+=====================================================================*/
+/*----------------------------------------------------*/
+/*font Variables*/
+/**=== Functions ===**/
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300&display=swap");
 .col-md-offset-right-1,
 .col-lg-offset-right-1 {
   margin-right: 8.33333333%;
 }
 
-
+/*---------------------------------------------------- */
+/*----------------------------------------------------*/
 html {
   height: 100%;
 }
@@ -17638,20 +17670,7 @@ border: none !important;
 }
 
 /********************************/
-.board {
-  background-color: #f6f7fb;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  padding: 100px 50px 40px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
+
 
 .board__title, .board__title-edit {
   font-weight: 500;
@@ -17999,18 +18018,7 @@ ul {
   margin-left: 0.15em;
 }
 
-.edit-modal {
-  z-index: 4;
-  background-color: white;
-  border-radius: 5px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  width: 925px;
-  padding: 2em;
-}
+
 
 .edit-modal__cols {
   display: -webkit-box;
@@ -18026,13 +18034,6 @@ ul {
 
 .edit-modal__left > .labels {
   margin-bottom: 0.875em;
-}
-
-.edit-modal__title, .edit-modal__title-edit {
-  height: 25px;
-  font-weight: 500;
-  font-size: 1.25em;
-  margin-bottom: 0.4em;
 }
 
 .edit-modal__title {
@@ -18100,12 +18101,6 @@ ul {
   margin-left: 1.5em;
 }
 
-.edit-modal__description {
-  white-space: pre-line;
-  margin-bottom: 2em;
-  font-size: 0.875rem;
-}
-
 .edit-modal__attachments {
   margin-bottom: 2em;
 }
@@ -18151,10 +18146,6 @@ ul {
   margin-top: 0.875em;
 }
 
-.edit-modal__actions {
-  margin-bottom: 2.5em;
-}
-
 .edit-modal__actions > li {
   padding-bottom: 1.4em;
 }
@@ -18182,7 +18173,7 @@ ul {
 .board {
   background-color: #f6f7fb;
   height: 100vh;
-  width: 100vw;
+  width: auto;
   overflow: hidden;
   padding: 100px 50px 40px;
   display: flex;
@@ -18653,6 +18644,8 @@ ul {
   transform: translate(-50%, -50%);
   width: 925px;
   padding: 2em;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+
 }
 .edit-modal__cols {
   display: flex;
@@ -18668,6 +18661,7 @@ ul {
   font-weight: 500;
   font-size: 1.25em;
   margin-bottom: 0.4em;
+  color: black;
 }
 .edit-modal__title {
   cursor: pointer;
@@ -18682,11 +18676,6 @@ ul {
 }
 .edit-modal__title-edit:focus {
   border: 1px #4680ff solid;
-}
-.edit-modal__subtitle {
-  color: #838282;
-  font-size: 0.875rem;
-  margin-bottom: 2.5em;
 }
 .edit-modal__subtitle span {
   color: black;
@@ -18720,6 +18709,7 @@ ul {
   white-space: pre-line;
   margin-bottom: 2em;
   font-size: 0.875rem;
+  color:black
 }
 .edit-modal__attachments {
   margin-bottom: 2em;
@@ -18757,6 +18747,7 @@ ul {
   margin-top: 0.875em;
 }
 .edit-modal__actions {
+  margin-left: -40px;
   margin-bottom: 2.5em;
 }
 .edit-modal__actions > li {
@@ -18810,7 +18801,7 @@ ul {
 .comment__header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1em;
+  /* margin-bottom: 1em; */
 }
 .comment__header-left {
   display: flex;
@@ -19675,4 +19666,8 @@ ul {
 .edit-modal__exit{
   background-color: white;
     border: none;
+}
+.comment-btns{
+  background-color: white;
+  border: none;
 }

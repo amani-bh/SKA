@@ -2,7 +2,7 @@ import React from 'react'
 import Card from './Card';
 import { Draggable } from 'react-beautiful-dnd';
 
-export default function DraggableCard({ card, list, index }) {
+export default function DraggableCard({ card, list, index,members }) {
   return (
     <Draggable draggableId={card.id.toString()} index={index}>
         {(provided, snapshot) => {
@@ -20,6 +20,7 @@ export default function DraggableCard({ card, list, index }) {
                 <Card
                     card={card}
                     list={list}
+                    members={members}
                     provided={provided}
                     isDragging={snapshot.isDragging}
                 />

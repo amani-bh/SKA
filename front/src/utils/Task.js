@@ -52,3 +52,34 @@ export const getProjectsByUser = async (id) => {
     const { data } = await axios.post("http://localhost:8004/task-api/"+ "update_item_description/"+id, {title,description} );
     return data;
   };
+
+  export const addCommentItem = async (comment) => {
+    const { data } = await axios.post("http://localhost:8004/task-api/"+ "add_comment", comment );
+    return data;
+  };
+
+  export const updateCommentItem = async (id,body) => {
+    const { data } = await axios.post("http://localhost:8004/task-api/"+ "update_comment/"+id, {body} );
+    return data;
+  };
+
+  export const deleteCommentItem = async (id,body) => {
+    const { data } = await axios.delete("http://localhost:8004/task-api/"+ "delete_comment/"+id );
+    return data;
+  };
+
+  export const inviteMemberToProject = async (id,email,name,receiver_id) => {
+    const { data } = await axios.post("http://localhost:8004/task-api/"+ "invite_member/"+id, {email,name,receiver_id} );
+    return data;
+  };
+
+  export const assignToCard = async (id,idUser) => {
+
+    try {
+        const {data}= await axios.get("http://localhost:8004/task-api/assign_to_item/"+id+"/"+idUser);
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    
+  };

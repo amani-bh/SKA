@@ -9,6 +9,7 @@ import { updateCard } from '../../../utils/board';
 import EditCardModal from './EditCardModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faUser } from '@fortawesome/free-solid-svg-icons';
+import { getUserProfile } from '../../../utils/user.auth.service';
 
 const getCardStyle = (isDragging, isEditing, defaultStyle) => {
   if (isEditing) {
@@ -43,11 +44,12 @@ export const mergeRefs = (...refs) => {
     };
 };
 
-export default function Card({ card, list, provided, isDragging }) {
-    // console.log("card**",card)
+export default function Card({ card, list,members, provided, isDragging }) {
   const { board, setBoard } = useContext(globalContext);
     const [isEditing, setIsEditing] = useState(false);
     const [title, setTitle] = useState(card.title);
+    const [assignedTo, setAssignedTo] = useState();
+
 
     const [showEditModal, setShowEditModal] = useState(false);
     const [showLabelModal, setShowLabelModal] = useState(false);
@@ -70,6 +72,25 @@ export default function Card({ card, list, provided, isDragging }) {
         }
     }, [isEditing]);
 
+    useEffect(() => {
+        let isMounted = true; 
+      
+        const fetchAssignedTo = async () => {
+          if (card.assigned_to != null && isMounted) {
+            const user = await getUserProfile(card.assigned_to);
+            if (isMounted) {
+              setAssignedTo(user);
+            }
+          }
+        };
+      
+        fetchAssignedTo();
+      
+        return () => {
+          isMounted = false; 
+        };
+      }, []);
+
     const onEditCard = async (e) => {
         e.preventDefault();
         if (title.trim() === "") return;
@@ -83,6 +104,8 @@ export default function Card({ card, list, provided, isDragging }) {
     const { innerRef, draggableProps, dragHandleProps } = provided;
 
     const cardImage = card.image || card.image_url || card.color;
+
+   
     return (
         <>
             <div
@@ -113,6 +136,7 @@ export default function Card({ card, list, provided, isDragging }) {
                 <div>
                     {!isEditing && (
                         <button
+                        style={{border:'none'}}
                             className="card__pen"
                             onClick={() => setIsEditing(true)}
                         >
@@ -131,6 +155,17 @@ export default function Card({ card, list, provided, isDragging }) {
                     ) : (
                         <p className="card__title">{card.title}</p>
                     )}
+
+                    <div className="card__members">
+                            <div className="member member--add">
+                            </div>
+                            {assignedTo && (
+                                <img src={assignedTo?.image_url} width="20px" height="20px" alt='user' title={assignedTo?.first_name+" "+assignedTo?.last_name} />
+
+
+                            )}
+                          
+                        </div>
                    
                     
                 </div>
@@ -140,6 +175,7 @@ export default function Card({ card, list, provided, isDragging }) {
                     card={card}
                     setShowModal={setShowEditModal}
                     list={list}
+                    members={members}
                 />
             )}
         </>

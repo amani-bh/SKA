@@ -4,30 +4,53 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import globalContext from '../../../utils/globalContext';
 import { updateCard } from '../../../utils/board';
-import { updateDescriptionItem, updateTitleItem } from '../../../utils/Task';
+import { addCommentItem, assignToCard, deleteCommentItem, updateCommentItem, updateDescriptionItem, updateTitleItem } from '../../../utils/Task';
 import { v4 as uuidv4 } from "uuid";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFileAlt, faPencil, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
+import useAxiosGet from '../../../utils/useAxiosGet';
+import { getCurrentUser, getUserProfile } from '../../../utils/user.auth.service';
+import moment from 'moment/moment';
 
 
-export default function EditCardModal  ({ card, list, setShowModal })  {
+export default function EditCardModal  ({ card, list, setShowModal,members })  {
     const [editingTitle, setEditingTitle] = useState(false);
+    const [assignedTo, setAssignedTo] = useState();
+    const [selectValue, setSelectValue] = useState();
     const [editingDescription, setEditingDescription] = useState(false);
+    const [assigneMember, setAssigneMember] = useState(false);
 
-    // useEffect(modalBlurHandler(setShowModal), []);
-    // useBlurSetState(".edit-modal__title-edit", editingTitle, setEditingTitle);
-    // useBlurSetState(
-    //     ".edit-modal__form",
-    //     editingDescription,
-    //     setEditingDescription
-    // );
 
-    // const {
-    //     data: comments,
-    //     addItem: addComment,
-    //     replaceItem: replaceComment,
-    //     removeItem: removeComment,
-    // } = useAxiosGet(`/boards/comments/?item=${card.id}`);
+    useEffect(()=>{
+        const fetchAssignedTo=async()=>{
+            if(card.assigned_to!=undefined){
+                const user=await getUserProfile(card.assigned_to)
+                console.log(user)
+            setAssignedTo(user)
+
+            }
+
+        }
+        fetchAssignedTo()
+    },[])
+    
+    const handleAssignTo=async(e)=>{
+        if(selectValue!=undefined){
+            const user=await getUserProfile(selectValue)
+            setAssignedTo(user)
+            const result=await assignToCard(card.id,user?.id)
+            setAssigneMember(false)
+        }
+        
+
+    }
+
+    const {
+        data: comments,
+        addItem: addComment,
+        replaceItem: replaceComment,
+        removeItem: removeComment,
+    } = useAxiosGet(`comments_by_item/${card.id}`);
 
     return (
         <div className="edit-modal">
@@ -96,28 +119,9 @@ export default function EditCardModal  ({ card, list, setShowModal })  {
                         )
                     )}
 
-                    {/* <div
-                        className="edit-modal__section-header"
-                        style={
-                            card.attachments.length === 0
-                                ? {
-                                      marginBottom: "1.75em",
-                                  }
-                                : null
-                        }
-                    >
-                        <div>
-                            <i className="fal fa-paperclip"></i> Attachments
-                        </div>
-                        <div>
-                            <a className="btn btn--secondary btn--small">
-                                <i className="fal fa-plus"></i> Add
-                            </a>
-                        </div>
-                    </div> */}
 
                     
-                    {/* <CommentForm
+                    <CommentForm
                         card={card}
                         style={
                             (comments || []).length === 0
@@ -131,7 +135,7 @@ export default function EditCardModal  ({ card, list, setShowModal })  {
                         comments={comments || []}
                         replaceComment={replaceComment}
                         removeComment={removeComment}
-                    /> */}
+                    />
                 </div>
 
                 <div className="edit-modal__right">
@@ -142,18 +146,64 @@ export default function EditCardModal  ({ card, list, setShowModal })  {
                     <ul className="edit-modal__actions">
                         
                         <li>
-                            <a className="btn btn--secondary btn--small">
-                                <FontAwesomeIcon icon={faUser} /> Change Members
-                            </a>
+                            <span className="btn btn--secondary btn--small" onClick={() => setAssigneMember(true)}>
+                                <FontAwesomeIcon icon={faUser} /> Change Assignd to
+                            </span>
                         </li>
                         <li>
-                            <a className="btn btn--secondary btn--small">
-                                <FontAwesomeIcon icon={faClock} /> Change Due Date
-                            </a>
+                            <span className="btn btn--secondary btn--small">
+                                <FontAwesomeIcon icon={faClock} /> Change End Date
+                            </span>
                         </li>
                     </ul>
+                    <div className="edit-modal__section-header">
+                        <div>Assigned to</div>
+                    </div>
+                    {assignedTo && (
+                        <ul className="edit-modal__members">
+              
+                        <li >
+                            <img src={assignedTo?.image_url} width="30px" height="30px" alt='user' />
+                            <p className='mt-2'>{assignedTo?.first_name+" "+assignedTo?.last_name}</p>
+                        </li>
+                
+                    </ul>
+                    )}
+                    
+                    {assigneMember && (
+                      <div className="label-modal label-modal--shadow" >
+                      <div className="label-modal__header">
+                          <p>Assign to </p>
+                          <button style={{border:'none',backgroundColor:'white'}} onClick={() => setAssigneMember(false)}>
+                          <FontAwesomeIcon icon={faTimes} />
+                          </button>
+                      </div>
+                  
+                      <div className="label-modal__content">
+                          <p className="label-modal__invite-header">
+                              <i className="fal fa-user"></i>
+                              Select member  
+                          </p>
+                          <select  className="label-modal__input"  onClick={(e)=>setSelectValue(e.target.value)}>
+                            <option>select</option>
+                          {members?.map(member=>(
+                            <option key={member?.id} value={member?.id}>{member?.first_name+" "+member?.last_name}</option>
+                          ))}
+                          </select>
+                          
+                          {selectValue ? (
+                              <button className="btn" onClick={handleAssignTo}>
+                                  Assign
+                              </button>
+                          ) : (
+                              <button className="btn btn--disabled" disabled>
+                                  Assign
+                              </button>
+                          )}
+                      </div>
+                  </div>  
+                    )}
 
-                    {/* <Members members={card.assigned_to} /> */}
                 </div>
             </div>
         </div>
@@ -198,7 +248,7 @@ const EditCardDescription = ({ list, card, setEditingDescription }) => {
     const onEditDesc = async (e) => {
         e.preventDefault();
         if (description.trim() === "") return;
-        const { data } = await updateDescriptionItem(card.id,card.title,description)
+        const data  = await updateDescriptionItem(card.id,card.title,description)
         setEditingDescription(false);
         updateCard(board, setBoard)(list.id, data);
     };
@@ -220,15 +270,18 @@ const EditCardDescription = ({ list, card, setEditingDescription }) => {
 };
 
 const Comments = ({ card, comments, replaceComment, removeComment }) => {
-    const { authUser } = useContext(globalContext);
+    // const { authUser } = useContext(globalContext);
     const [isEditing, setIsEditing] = useState(false);
-    // useBlurSetState(".edit-modal__form--comment", isEditing, setIsEditing);
+    // const [user, setUser] = useState();
+        const user =  getCurrentUser();
+      
+
 
     if (comments.length === 0) return null;
 
     const onDelete = async (comment) => {
-        // await authAxios.delete(`${backendUrl}/boards/comments/${comment.id}/`);
-        // removeComment(comment.id);
+        await deleteCommentItem(comment.id) ;
+        removeComment(comment.id);
     };
 
     return (
@@ -238,28 +291,31 @@ const Comments = ({ card, comments, replaceComment, removeComment }) => {
                     <div className="comment">
                         <div className="comment__header">
                             <div className="comment__header-left">
-                                {/* <ProfilePic user={comment.author} /> */}
-                                <div className="comment__info">
-                                    <p>{comment.author.full_name}</p>
-                                    {/* <p>{timeSince(comment.created_at)}</p> */}
+                                <img className='member member--image' src={comment?.author_image} alt='' width="35px" height="35px" />
+                                <div className="comment__info mt-1">
+                                    <h6>{comment?.author_name}</h6>
+                                   
+                                </div>
+                                <div className="comment__info ml-3">
+                                <p>{moment(comment?.created_at).fromNow()}</p>
                                 </div>
                             </div>
-                            {comment.author.username === authUser.username && (
+                            {comment?.author_id === user?.id && (
                                 <div className="comment__header-right">
-                                    <button
+                                    <button className='comment-btns'
                                         onClick={() => setIsEditing(comment.id)}
                                     >
                                         Edit
                                     </button>{" "}
                                     -{" "}
-                                    <button onClick={() => onDelete(comment)}>
+                                    <button className='comment-btns' onClick={() => onDelete(comment)}>
                                         Delete
                                     </button>
                                 </div>
                             )}
                         </div>
                         {isEditing !== comment.id ? (
-                            <div className="comment__content">
+                            <div className="comment__content ml-4">
                                 {comment.body}
                             </div>
                         ) : (
@@ -288,30 +344,30 @@ const CommentForm = ({
     // If comment not null, edit form
     const [commentBody, setCommentBody] = useState(comment ? comment.body : "");
 
+
     const onAddComment = async (e) => {
         e.preventDefault();
+      const user = await getCurrentUser();
         if (commentBody.trim() === "") return;
-        // const { data } = await authAxios.post(
-        //     `${backendUrl}/boards/comments/`,
-        //     {
-        //         item: card.id,
-        //         body: commentBody,
-        //     }
-        // );
-        // addComment(data);
+        const commentToAdd={
+            item: card.id,
+            body: commentBody,
+            author_id:user?.id,
+            author_image:user?.image_url,
+            author_name:user?.first_name+" "+user?.last_name,
+
+        }
+        console.log(commentToAdd)
+        const data=await addCommentItem(commentToAdd);
+        addComment(data);
         setCommentBody("");
     };
 
     const onEditComment = async (e) => {
         e.preventDefault();
         if (commentBody.trim() === "") return;
-        // const { data } = await authAxios.put(
-        //     `${backendUrl}/boards/comments/${comment.id}/`,
-        //     {
-        //         body: commentBody,
-        //     }
-        // );
-        // replaceComment(data);
+        const data=await updateCommentItem(comment.id,commentBody)
+        replaceComment(data);
         setIsEditing(false);
     };
 

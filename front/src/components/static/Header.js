@@ -177,7 +177,7 @@ export default function Header() {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      <img src="/front/img/notif-icon.png" width="30px"/> 
+                      <img src="/front/img/notif-icon.png" width="30px" alt=""/> 
                       
                     </a>
                     <i

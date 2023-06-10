@@ -1,9 +1,17 @@
 version: '3'
 
 services:
+  discovery:
+    build: 
+      context: ./Eureka-Server
+      dockerfile: dockerfile
+    ports:
+      - 8761:8761
+    image: "eureka-service"
+    
   frontend:
     build:
-      context: ./frontend
+      context: ./front
       dockerfile: Dockerfile
     ports:
       - 3001:3001
@@ -14,48 +22,63 @@ services:
       - task
     networks:
       - app-network
+      
+  gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - 8006:8006
+    depends_on:
+      - discovery
+    networks:
+      - app-network
 
   auth:
     build:
-      context: ./auth
+      context: ./auth-django
       dockerfile: Dockerfile
     ports:
       - 8002:8002
     depends_on:
       - auth-db
+      - discovery
     networks:
       - app-network
 
   forum:
     build:
-      context: ./forum
+      context: ./forum-service
       dockerfile: Dockerfile
     ports:
       - 8001:8001
     depends_on:
       - forum-db
+      - discovery
     networks:
       - app-network
 
   chat:
     build:
-      context: ./chat
+      context: ./chat-service
       dockerfile: Dockerfile
     ports:
       - 8000:8000
     depends_on:
       - chat-db
+      - discovery
     networks:
       - app-network
 
   task:
     build:
-      context: ./task
+      context: ./task-service
       dockerfile: Dockerfile
     ports:
       - 8004:8004
     depends_on:
       - task-db
+      - discovery
     networks:
       - app-network
 
@@ -111,3 +134,4 @@ volumes:
 
 networks:
   app-network:
+  eureka:

@@ -33,7 +33,7 @@ export const getAllCategories = async () => {
   export const getAllQuestions = async () => {
 
     try {
-        const {data}= await axios.get("http://localhost:8001/forum-api/all_questions");
+        const {data}= await axios.get("http://localhost:8006/gateway-api/forum-api/all_questions");
         return data;
       } catch (error) {
         console.log(error);

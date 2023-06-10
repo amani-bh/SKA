@@ -11,7 +11,7 @@ import { BoardModal } from './BoardModal';
 export default function HomeProjects() {
   const [showAddBoardModal, setShowAddBoardModal] = useState(false);
   const [boardProject, setBoardProject] = useState(0);
-  const [boards, setBoards] = useState();
+  const [boards, setBoards] = useState([]);
   const [user, setUser] = useState();
   const navigate=useNavigate()
   const { register, handleSubmit, formState: { errors },setValue, watch } = useForm();
@@ -31,9 +31,17 @@ export default function HomeProjects() {
   }, []);
 
   const addBoard = async (board) => {
-    const result = await addProject(board).then( res=>{
-      if(res!=undefined)
-      setBoards([...boards,res])
+    const project={
+      title:board.title,
+      description:board.description,
+      owner:user?.id
+    }
+    const result = await addProject(project).then( res=>{
+      
+      if(res!=undefined){
+        setBoards([...boards,res])
+
+      }
     })
     setModalVisible(false);
 };

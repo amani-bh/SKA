@@ -6,8 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import './interceptors/axios';
 import ReactModal from 'react-modal';
 import GlobalProvider from './utils/GlobalProvider';
+import configureAxios from './interceptors/axios';
 
 ReactModal.setAppElement('#root');
+configureAxios();
 
 ReactDOM.render(<React.StrictMode>
     <GlobalProvider>

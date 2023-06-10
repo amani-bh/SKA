@@ -8,7 +8,11 @@ import { Link, useParams } from 'react-router-dom';
 import {  addListBoard, getProjectById } from '../../../utils/Task';
 import { useContext } from 'react';
 import globalContext from '../../../utils/globalContext';
-import { onDragEnd } from '../../../utils/board';
+import { addList, onDragEnd } from '../../../utils/board';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { getCurrentUser, getUserProfile } from '../../../utils/user.auth.service';
+import InviteMembersModal from './InviteMembersModal';
 
 
 
@@ -17,8 +21,22 @@ export default function ProjectBoard() {
   const { id } = useParams();
   const [addingList, setAddingList] = useState(false);
   const [  board,setBoard ] = useState();
+  const [isInviting, setIsInviting] = useState(false);
+  const [connectedUser,setConnectedUser]=useState()
+  const [members, setMembers] = useState([]);
+
+
 
   const { setBoardContext } = useContext(globalContext);
+
+  useEffect(()=>{
+    const fetchUser=async()=>{
+        const result=await getCurrentUser()
+        setConnectedUser(result)
+    }
+    fetchUser()
+  },[])
+
   useEffect(() => {
       if (board) {
           setBoardContext(board, setBoard);
@@ -28,17 +46,27 @@ export default function ProjectBoard() {
   useEffect(() => {
     const fetchProject=async()=>{
         const result= await getProjectById(id);
-        console.log(result)
         setBoard(result)
+        try{
+            result?.members.map(async member=>{
+                const user= await getUserProfile(member)
+                if (!members.find((m) => m.id === user.id)) {
+                    setMembers((prevMembers) => [...prevMembers, user]);
+                  }
+    
+            })
+
+        }catch(error){
+            console.log(error)
+        }
+
+       
 
     }
     fetchProject()
       
   }, []);
 
-  const [editingTitle, setEditingTitle] = useState(false);
-
-  const [isBackgroundDark, setIsBackgroundDark] = useState(false);
 
   return (
     <>
@@ -57,8 +85,31 @@ export default function ProjectBoard() {
   </div>
   </nav>
       <div className="board" >
-          
-          <p className="board__subtitle">{board?.owner.title}</p>
+          <div className='row'>
+
+          <h2 className='col-4 mr-5' >{board?.title}</h2>
+          <div className='col-4   mt-1' >
+            <div className='d-flex' >
+           
+                {members?.map(member=>(
+                    
+                <img className='mt-1'  key={member?.id} src={member?.image_url} alt='member' width="22px" height="22px" title={member?.first_name+" "+member?.last_name}/>       
+                    
+                ))}
+             
+            <FontAwesomeIcon  onClick={() => setIsInviting(true)} className='col-1' icon={faPlusCircle} style={{ color: '#0472ac', fontSize: '20px',marginTop:'7px ',cursor: 'pointer'}} />
+            
+            </div>
+            </div>
+            {connectedUser?.id === board?.owner && isInviting && (
+                <InviteMembersModal
+                    project={board}
+                    setShowModal={setIsInviting}
+                />
+            )}
+         
+          </div>
+         
           <DragDropContext onDragEnd={onDragEnd(board, setBoard)} >
               <Droppable
                   droppableId={"board" + board?.id.toString()}
@@ -74,6 +125,7 @@ export default function ProjectBoard() {
                           {board?.lists?.map((list, index) => (
                               <List
                                   list={list}
+                                  members={members}
                                   index={index}
                                   key={uuidv4()}
                               />
@@ -124,7 +176,8 @@ const CreateList = ({ board, setBoard, setAddingList }) => {
       console.log(list)
       const result = await addListBoard(list)
       if(result!=undefined){
-        setBoard(result)
+        // setBoard(result)
+        addList(board, setBoard)(result);
       }
       setAddingList(false);
   };
