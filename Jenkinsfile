@@ -11,7 +11,7 @@ pipeline {
    stages{
         stage('GIT') { 
             steps { 
-               git branch: 'main', credentialsId: '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', url: 'https://github.com/amani-bh/SKA.git'
+               git branch: 'main', credentialsId: '3d6128a5-9878-4701-998a-994c82e266a1', url: 'https://github.com/amani-bh/SKA.git'
                 
             }
          }
