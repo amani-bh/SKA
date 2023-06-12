@@ -80,10 +80,10 @@ pipeline {
        stage('Publish to Nexus') {
             steps {
                 script {
-                    def pypiRepositoryUrl = "http://172.10.0.140:8081/repository/pypi/"
+                    def pypiRepositoryUrl = "http://172.10.0.140:8081/repository/ska/"
                     def nexusUsername = 'admin'
                     def nexusPassword = 'admin'
-                    def nexusApiUrl = "http://172.10.0.140:8081/service/rest/v1/components?repository=nexus"
+                    def nexusApiUrl = "http://172.10.0.140:8081/repository/ska/"
 
                     def uploadToNexus = { directory ->
                         sh "python3.8 -m pip install setuptools"
