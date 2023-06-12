@@ -25,6 +25,7 @@ pipeline {
 					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
 				dir('chat-service') {
+					sh 'python3.8 -m pip install --user cryptography'
 					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
 				dir('task-service') {
