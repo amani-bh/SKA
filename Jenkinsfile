@@ -73,7 +73,7 @@ pipeline {
 
         stage('SonarQube') {
             steps {
-                sh 'sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+                sh 'sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar'
             }
         }
 		
