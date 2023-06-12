@@ -86,33 +86,32 @@ pipeline {
                     def nexusApiUrl = "http://172.10.0.140:8081/service/rest/v1/components?repository=nexus"
 
                     def uploadToNexus = { directory ->
+                        sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh "tar -zcvf dist.tar.gz -C ${directory}/dist ."
+                        sh "mkdir -p ${directory}/dist"
+                        sh "cd ${directory} && tar -zcvf dist.tar.gz -C dist ."
                         sh "find ${directory} -name '*.tar.gz' -exec curl -v -u ${nexusUsername}:${nexusPassword} --upload-file {} ${nexusApiUrl} \\;"
                     }
 
                     dir('auth-django') {
-                        sh 'python3.8 -m pip install setuptools'
-                        uploadToNexus('auth-django')
+                        uploadToNexus('.')
                     }
 
                     dir('forum-service') {
-                        sh 'python3.8 -m pip install setuptools'
-                        uploadToNexus('forum-service')
+                        uploadToNexus('.')
                     }
 
                     dir('task-service') {
-                        sh 'python3.8 -m pip install setuptools'
-                        uploadToNexus('task-service')
+                        uploadToNexus('.')
                     }
 
                     dir('api-gateway') {
-                        sh 'python3.8 -m pip install setuptools'
-                        uploadToNexus('api-gateway')
+                        uploadToNexus('.')
                     }
                 }
             }
         }
+
 
   
 
