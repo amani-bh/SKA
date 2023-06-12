@@ -33,6 +33,33 @@ pipeline {
 			}
 		}
 
+		 stage('Setup Databases') {
+            steps {
+                sh 'sudo service postgresql start' 
+                sh 'sudo -u postgres psql -c "CREATE DATABASE auth-service;"' 
+                sh 'sudo -u postgres psql -c "CREATE DATABASE forum-service;"' 
+                sh 'sudo -u postgres psql -c "CREATE DATABASE chat-service;"' 
+                sh 'sudo -u postgres psql -c "CREATE DATABASE task-service;"' 
+            }
+        }
+
+        stage('Migrations') {
+            steps {
+                dir('auth-django') {
+                    sh 'python3.8 manage.py migrate' 
+                }
+
+                dir('forum-service') {
+                    sh 'python3.8 manage.py migrate' 
+                }
+				dir('task-service') {
+                    sh 'python3.8 manage.py migrate' 
+                }
+				
+                
+            }
+        }
+
 		 
 		
 		
@@ -50,9 +77,6 @@ pipeline {
 				}
 				dir('api-gateway') {
 					sh 'python3.8 manage.py test'
-				}
-				dir('Eureka-Server') {
-					sh 'mvn test'
 				}
             }
         }
