@@ -34,23 +34,7 @@ pipeline {
 		}
 
 		 
-		stage('Clean') { 
-            steps { 
-				
-				dir('Eureka-Server') {
-					sh 'mvn clean install'
-				}
-                
-            }
-        }
 		
-		stage('maven compile') {
-            steps {
-				dir('Eureka-Server') {
-					sh 'mvn compile'
-				}
-            }
-        }
 		
 
         stage('Unit Tests') {
