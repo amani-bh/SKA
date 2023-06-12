@@ -33,16 +33,6 @@ pipeline {
 			}
 		}
 
-		stage('Setup Databases') {
-            steps {
-                sh 'sudo -H -u postgres psql -c "CREATE DATABASE auth-service;"'
-                sh 'sudo -H  -u postgres psql -c "CREATE DATABASE forum-service;"'
-                sh 'sudo -H  -u postgres psql -c "CREATE DATABASE chat-service;"'
-                sh 'sudo -H  -u postgres psql -c "CREATE DATABASE task-service;"'
-            }
-        }
-
-
         stage('Migrations') {
             steps {
                 dir('auth-django') {
