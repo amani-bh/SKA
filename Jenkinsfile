@@ -60,80 +60,59 @@ pipeline {
             }
         }
 
-        stage('SonarQube') {
-            steps {
-                dir('auth-django') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=auth-django'
-                }
-                dir('forum-service') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=forum-service'
-                }
-                dir('task-service') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=task-service'
-                }
-                dir('api-gateway') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=api-gateway'
-                }
-            }
-        }
+        // stage('SonarQube') {
+        //     steps {
+        //         dir('auth-django') {
+        //             sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=auth-django'
+        //         }
+        //         dir('forum-service') {
+        //             sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=forum-service'
+        //         }
+        //         dir('task-service') {
+        //             sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=task-service'
+        //         }
+        //         dir('api-gateway') {
+        //             sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=api-gateway'
+        //         }
+        //     }
+        // }
 
-        stage('Publish to Nexus') {
+       stage('Publish to Nexus') {
             steps {
                 script {
                     def pypiRepositoryUrl = "http://172.10.0.140:8081/repository/pypi/"
                     def nexusUsername = 'admin'
                     def nexusPassword = 'admin'
+                    def nexusApiUrl = "http://172.10.0.140:8081/service/rest/v1/components?repository=nexus"
+
+                    def uploadToNexus = { directory ->
+                        sh "python3.8 setup.py sdist"
+                        sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file ${directory}/dist/*.tar.gz ${nexusApiUrl}"
+                    }
 
                     dir('auth-django') {
-                        sh 'python3.8 -m pip install twine'
-                        sh 'python3.8 setup.py sdist'
-                        sh "echo '[distutils]' > ~/.pypirc"
-                        sh "echo 'index-servers = nexus' >> ~/.pypirc"
-                        sh "echo '[nexus]' >> ~/.pypirc"
-                        sh "echo 'repository: ${pypiRepositoryUrl}/ska/' >> ~/.pypirc"
-                        sh "echo 'username: ${nexusUsername}' >> ~/.pypirc"
-                        sh "echo 'password: ${nexusPassword}' >> ~/.pypirc"
-                        sh 'twine upload dist/* -r nexus'
+                        sh 'python3.8 -m pip install setuptools'
+                        uploadToNexus('auth-django')
                     }
 
                     dir('forum-service') {
-                        sh 'python3.8 -m pip install twine'
-                        sh 'python3.8 setup.py sdist'
-                        sh "echo '[distutils]' > ~/.pypirc"
-                        sh "echo 'index-servers = nexus' >> ~/.pypirc"
-                        sh "echo '[nexus]' >> ~/.pypirc"
-                        sh "echo 'repository: ${pypiRepositoryUrl}/ska/' >> ~/.pypirc"
-                        sh "echo 'username: ${nexusUsername}' >> ~/.pypirc"
-                        sh "echo 'password: ${nexusPassword}' >> ~/.pypirc"
-                        sh 'twine upload dist/* -r nexus'
+                        sh 'python3.8 -m pip install setuptools'
+                        uploadToNexus('forum-service')
                     }
 
                     dir('task-service') {
-                        sh 'python3.8 -m pip install twine'
-                        sh 'python3.8 setup.py sdist'
-                        sh "echo '[distutils]' > ~/.pypirc"
-                        sh "echo 'index-servers = nexus' >> ~/.pypirc"
-                        sh "echo '[nexus]' >> ~/.pypirc"
-                        sh "echo 'repository: ${pypiRepositoryUrl}/ska/' >> ~/.pypirc"
-                        sh "echo 'username: ${nexusUsername}' >> ~/.pypirc"
-                        sh "echo 'password: ${nexusPassword}' >> ~/.pypirc"
-                        sh 'twine upload dist/* -r nexus'
+                        sh 'python3.8 -m pip install setuptools'
+                        uploadToNexus('task-service')
                     }
 
                     dir('api-gateway') {
-                        sh 'python3.8 -m pip install twine'
-                        sh 'python3.8 setup.py sdist'
-                        sh "echo '[distutils]' > ~/.pypirc"
-                        sh "echo 'index-servers = nexus' >> ~/.pypirc"
-                        sh "echo '[nexus]' >> ~/.pypirc"
-                        sh "echo 'repository: ${pypiRepositoryUrl}/ska/' >> ~/.pypirc"
-                        sh "echo 'username: ${nexusUsername}' >> ~/.pypirc"
-                        sh "echo 'password: ${nexusPassword}' >> ~/.pypirc"
-                        sh 'twine upload dist/* -r nexus'
+                        sh 'python3.8 -m pip install setuptools'
+                        uploadToNexus('api-gateway')
                     }
                 }
             }
-        }   
+        }
+  
 
 
     }
