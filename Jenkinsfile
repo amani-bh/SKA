@@ -33,14 +33,15 @@ pipeline {
 			}
 		}
 
-		 stage('Setup Databases') {
+		stage('Setup Databases') {
             steps {
-                sh 'su - postgres -c "psql -c \\"CREATE DATABASE auth-service;\\""'
-                sh 'su - postgres -c "psql -c \\"CREATE DATABASE forum-service;\\""'
-                sh 'su - postgres -c "psql -c \\"CREATE DATABASE chat-service;\\""'
-                sh 'su - postgres -c "psql -c \\"CREATE DATABASE task-service;\\""'
+                sh 'sudo -u postgres psql -c "CREATE DATABASE auth-service;"'
+                sh 'sudo -u postgres psql -c "CREATE DATABASE forum-service;"'
+                sh 'sudo -u postgres psql -c "CREATE DATABASE chat-service;"'
+                sh 'sudo -u postgres psql -c "CREATE DATABASE task-service;"'
             }
         }
+
 
         stage('Migrations') {
             steps {
