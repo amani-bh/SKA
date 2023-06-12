@@ -76,6 +76,23 @@ pipeline {
                 sh 'sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar'
             }
         }
+
+        stage('SonarQube') {
+            steps {
+                dir('auth-django') {
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=auth-django'
+                }
+                dir('forum-service') {
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=forum-service'
+                }
+                dir('task-service') {
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=task-service'
+                }
+                dir('api-gateway') {
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=api-gateway'
+                }
+            }
+        }
 		
 		//stage('Email notification') {
             //steps {
