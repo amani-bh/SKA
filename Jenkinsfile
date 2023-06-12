@@ -19,19 +19,19 @@ pipeline {
 		stage('Install Dependencies') {
 			steps {
 				dir('auth-django') {
-					sh '~/.local/bin/pip3.8install -r requirements.txt' 
+					sh '~/.local/bin/pip3.8 install -r requirements.txt' 
 				}
 				dir('forum-service') {
-					sh '~/.local/bin/pip3.8install -r requirements.txt' 
+					sh '~/.local/bin/pip3.8 install -r requirements.txt' 
 				}
 				dir('chat-service') {
-					sh '~/.local/bin/pip3.8install -r requirements.txt' 
+					sh '~/.local/bin/pip3.8 install -r requirements.txt' 
 				}
 				dir('task-service') {
-					sh '~/.local/bin/pip3.8install -r requirements.txt' 
+					sh '~/.local/bin/pip3.8 install -r requirements.txt' 
 				}
 				dir('api-gateway') {
-					sh '~/.local/bin/pip3.8install -r requirements.txt' 
+					sh '~/.local/bin/pip3.8 install -r requirements.txt' 
 				}
 			}
 		}
