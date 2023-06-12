@@ -19,19 +19,19 @@ pipeline {
 		stage('Install Dependencies') {
 			steps {
 				dir('auth-django') {
-					sh 'python3.8 -m pip install -r requirements.txt' 
+					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
 				dir('forum-service') {
-					sh 'python3.8 -m pip install -r requirements.txt' 
+					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
 				dir('chat-service') {
-					sh 'python3.8 -m pip install -r requirements.txt' 
+					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
 				dir('task-service') {
-					sh 'python3.8 -m pip install -r requirements.txt' 
+					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
 				dir('api-gateway') {
-					sh 'python3.8 -m pip install -r requirements.txt' 
+					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
 			}
 		}
