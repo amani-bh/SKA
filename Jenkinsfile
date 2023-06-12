@@ -34,8 +34,7 @@ pipeline {
 		}
 
 		 stage('Setup Databases') {
-            steps {
-                sh 'sudo service postgresql start' 
+            steps { 
                 sh 'sudo -u postgres psql -c "CREATE DATABASE auth-service;"' 
                 sh 'sudo -u postgres psql -c "CREATE DATABASE forum-service;"' 
                 sh 'sudo -u postgres psql -c "CREATE DATABASE chat-service;"' 
