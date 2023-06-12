@@ -73,12 +73,6 @@ pipeline {
 
         stage('SonarQube') {
             steps {
-                sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar'
-            }
-        }
-
-        stage('SonarQube') {
-            steps {
                 dir('auth-django') {
                     sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=auth-django'
                 }
