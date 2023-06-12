@@ -87,7 +87,8 @@ pipeline {
 
                     def uploadToNexus = { directory ->
                         sh "python3.8 setup.py sdist"
-                        sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file ${directory}/dist/*.tar.gz ${nexusApiUrl}"
+                        sh "tar -zcvf dist.tar.gz -C ${directory}/dist ."
+                        sh "find ${directory} -name '*.tar.gz' -exec curl -v -u ${nexusUsername}:${nexusPassword} --upload-file {} ${nexusApiUrl} \\;"
                     }
 
                     dir('auth-django') {
@@ -112,6 +113,7 @@ pipeline {
                 }
             }
         }
+
   
 
 
