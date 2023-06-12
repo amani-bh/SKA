@@ -40,9 +40,6 @@ pipeline {
                 dir('task-service') {
                     sh 'python3.8 manage.py migrate'
                 }
-                dir('api-gateway') {
-                    sh 'python3.8 manage.py migrate'
-                }
             }
         }
 
