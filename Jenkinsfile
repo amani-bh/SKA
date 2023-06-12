@@ -32,6 +32,7 @@ pipeline {
 				}
 				dir('api-gateway') {
 					sh 'pip install -r requirements.txt' 
+				}
 			}
 		}
 
