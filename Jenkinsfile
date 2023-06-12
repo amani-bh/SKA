@@ -24,10 +24,6 @@ pipeline {
 				dir('forum-service') {
 					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
-				dir('chat-service') {
-					sh 'python3.8 -m pip install --user cryptography'
-					sh 'python3.8 -m pip install --user -r requirements.txt' 
-				}
 				dir('task-service') {
 					sh 'python3.8 -m pip install --user -r requirements.txt' 
 				}
@@ -44,9 +40,6 @@ pipeline {
 					sh 'python3.8 manage.py clean'
 				}
 				dir('forum-service') {
-					sh 'python3.8 manage.py clean'
-				}
-				dir('chat-service') {
 					sh 'python3.8 manage.py clean'
 				}
 				dir('task-service') {
@@ -77,9 +70,6 @@ pipeline {
 					sh 'python3.8 manage.py test'
 				}
 				dir('forum-service') {
-					sh 'python3.8 manage.py test'
-				}
-				dir('chat-service') {
 					sh 'python3.8 manage.py test'
 				}
 				dir('task-service') {
