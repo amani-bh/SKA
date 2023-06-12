@@ -19,19 +19,19 @@ pipeline {
 		stage('Clean') { 
             steps { 
 				dir('auth-django') {
-					sh 'python manage.py clean'
+					sh 'python3.8 manage.py clean'
 				}
 				dir('forum-service') {
-					sh 'python manage.py clean'
+					sh 'python3.8 manage.py clean'
 				}
 				dir('chat-service') {
-					sh 'python manage.py clean'
+					sh 'python3.8 manage.py clean'
 				}
 				dir('task-service') {
-					sh 'python manage.py clean'
+					sh 'python3.8 manage.py clean'
 				}
 				dir('api-gateway') {
-					sh 'python manage.py clean'
+					sh 'python3.8 manage.py clean'
 				}
 				dir('Eureka-Server') {
 					sh 'mvn clean install'
