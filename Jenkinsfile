@@ -15,6 +15,26 @@ pipeline {
                 
             }
          }
+		
+		stage('Install Dependencies') {
+			steps {
+				dir('auth-django') {
+					sh 'pip install -r requirements.txt' 
+				}
+				dir('forum-service') {
+					sh 'pip install -r requirements.txt' 
+				}
+				dir('chat-service') {
+					sh 'pip install -r requirements.txt' 
+				}
+				dir('task-service') {
+					sh 'pip install -r requirements.txt' 
+				}
+				dir('api-gateway') {
+					sh 'pip install -r requirements.txt' 
+			}
+		}
+
 		 
 		stage('Clean') { 
             steps { 
@@ -40,23 +60,8 @@ pipeline {
             }
         }
 		
-		stage('Install Dependencies') {
+		stage('maven compile') {
             steps {
-				dir('auth-django') {
-					sh 'pip install -r requirements.txt'
-				}
-				dir('forum-service') {
-					sh 'pip install -r requirements.txt'
-				}
-				dir('chat-service') {
-					sh 'pip install -r requirements.txt'
-				}
-				dir('task-service') {
-					sh 'pip install -r requirements.txt'
-				}
-				dir('api-gateway') {
-					sh 'pip install -r requirements.txt'
-				}
 				dir('Eureka-Server') {
 					sh 'mvn compile'
 				}
@@ -67,19 +72,19 @@ pipeline {
         stage('Unit Tests') {
             steps {
 				dir('auth-django') {
-					sh 'python manage.py test'
+					sh 'python3.8 manage.py test'
 				}
 				dir('forum-service') {
-					sh 'python manage.py test'
+					sh 'python3.8 manage.py test'
 				}
 				dir('chat-service') {
-					sh 'python manage.py test'
+					sh 'python3.8 manage.py test'
 				}
 				dir('task-service') {
-					sh 'python manage.py test'
+					sh 'python3.8 manage.py test'
 				}
 				dir('api-gateway') {
-					sh 'python manage.py test'
+					sh 'python3.8 manage.py test'
 				}
 				dir('Eureka-Server') {
 					sh 'mvn test'
