@@ -82,34 +82,35 @@ pipeline {
                 script {
                     def nexusUsername = 'admin'
                     def nexusPassword = 'admin'
-                    def nexusApiUrl = "http://172.10.0.140:8081/repository/ska/pypi/"
+                    def nexusApiUrl = "http://172.10.0.140:8081/repository/"
 
                     def uploadToNexus = { directory ->
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
                         sh "mkdir -p ${directory}/dist"
                         sh "cd ${directory} && tar -zcvf dist.tar.gz -C dist ."
-                        sh "find ${directory} -name '*.tar.gz' -exec curl -v -u ${nexusUsername}:${nexusPassword} --upload-file {} ${nexusApiUrl} \\;"
+                        sh "find ${directory}/dist -name '*.tar.gz' -exec curl -v -u ${nexusUsername}:${nexusPassword} --upload-file {} ${nexusApiUrl}${directory}/ \\;"
                     }
 
-                    dir('auth-django') {
-                        uploadToNexus('.')
+                    dir('auth-service') {
+                        uploadToNexus('auth-service')
                     }
 
                     dir('forum-service') {
-                        uploadToNexus('.')
+                        uploadToNexus('forum-service')
                     }
 
                     dir('task-service') {
-                        uploadToNexus('.')
+                        uploadToNexus('task-service')
                     }
 
                     dir('api-gateway') {
-                        uploadToNexus('.')
+                        uploadToNexus('api-gateway')
                     }
                 }
             }
         }
+
 
 
 
