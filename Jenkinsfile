@@ -105,8 +105,9 @@ pipeline {
                     dir('api-gateway') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}api-gateway/ \\;"
+                        sh "find dist -name 'api-gateway-1.0.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}api-gateway/ \\;"
                     }
+
                 }
             }
         }
