@@ -77,23 +77,6 @@ pipeline {
         //     }
         // }
 
-        stage('Build and Collect Static Files') {
-            steps {
-                dir('auth-django') {
-                    sh 'python3.8 manage.py collectstatic --noinput'
-                }
-                dir('forum-service') {
-                    sh 'python3.8 manage.py collectstatic --noinput'
-                }
-                dir('task-service') {
-                    sh 'python3.8 manage.py collectstatic --noinput'
-                }
-                dir('api-gateway') {
-                    sh 'python3.8 manage.py collectstatic --noinput'
-                }
-            }
-        }
-
        stage('Publish to Nexus') {
             steps {
                 script {
