@@ -92,7 +92,7 @@ pipeline {
                         sh "find ${directory}/dist -name '*.tar.gz' -exec curl -v -u ${nexusUsername}:${nexusPassword} --upload-file {} ${nexusApiUrl}${directory}/ \\;"
                     }
 
-                    dir('auth-service') {
+                    dir('auth-django') {
                         uploadToNexus('auth-service')
                     }
 
