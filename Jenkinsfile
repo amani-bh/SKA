@@ -87,25 +87,25 @@ pipeline {
                     dir('auth-django') {
 						sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-						sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file 'dist/*.tar.gz' '${nexusUrl}auth-service'"
+						sh "curl -v -u admin:admin --upload-file "dist/*.tar.gz" http://172.10.0.140:8081/repository/auth-service"
                     }
 
                     dir('forum-service') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-						sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file 'dist/*.tar.gz' '${nexusUrl}forum-service'"
+						sh "curl -v -u admin:admin --upload-file "dist/*.tar.gz" http://172.10.0.140:8081/repository/forum-service"
                     }
 
                     dir('task-service') {
 						sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-						sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file 'dist/*.tar.gz' '${nexusUrl}task-service'"
+						sh "curl -v -u admin:admin --upload-file "dist/*.tar.gz" http://172.10.0.140:8081/repository/task-service"
                     }
 
                     dir('api-gateway') {
 						sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-						sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file 'dist/*.tar.gz' '${nexusUrl}api-gateway'"
+						sh "curl -v -u admin:admin --upload-file "dist/*.tar.gz" http://172.10.0.140:8081/repository/api-gateway"
                     }
                 }
             }
