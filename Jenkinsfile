@@ -119,7 +119,7 @@ pipeline {
                             if (tarFile) {
                                 // Le fichier tar.gz existe
                                 sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
-                                sh "curl -v -u admin:admin --upload-file ${tarFile} ${nexusUrl}test/"
+                                sh "curl -v -u admin:admin --upload-file ${tarFile} ${nexusUrl}api-gateway/"
                             } else {
                                 // Le fichier tar.gz n'existe pas
                                 sh "echo 'Le fichier api-gateway-1.0.tar.gz est introuvable.'"
