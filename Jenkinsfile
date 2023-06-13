@@ -82,30 +82,30 @@ pipeline {
                 script {
                     def nexusUsername = 'admin'
                     def nexusPassword = 'admin'
-                    def nexusApiUrl = "http://172.10.0.140:8081/repository/"
-
-                    def uploadToNexus = { directory ->
-                        sh "python3.8 -m pip install setuptools"
-                        sh "python3.8 setup.py sdist"
-                        sh "mkdir -p ${directory}/dist"
-                        sh "cd ${directory} && tar -zcvf dist.tar.gz -C dist ."
-                        sh "find ${directory}/dist -name '*.tar.gz' -exec curl -v -u ${nexusUsername}:${nexusPassword} --upload-file {} ${nexusApiUrl}${directory}/ \\;"
-                    }
+                    def nexusUrl = "http://172.10.0.140:8081/repository/"
 
                     dir('auth-django') {
-                        uploadToNexus('auth-service')
+						sh "python3.8 -m pip install setuptools"
+                        sh "python3.8 setup.py sdist"
+						sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file 'dist/*.tar.gz' '${nexusUrl}auth-service'"
                     }
 
                     dir('forum-service') {
-                        uploadToNexus('forum-service')
+                        sh "python3.8 -m pip install setuptools"
+                        sh "python3.8 setup.py sdist"
+						sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file 'dist/*.tar.gz' '${nexusUrl}forum-service'"
                     }
 
                     dir('task-service') {
-                        uploadToNexus('task-service')
+						sh "python3.8 -m pip install setuptools"
+                        sh "python3.8 setup.py sdist"
+						sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file 'dist/*.tar.gz' '${nexusUrl}task-service'"
                     }
 
                     dir('api-gateway') {
-                        uploadToNexus('api-gateway')
+						sh "python3.8 -m pip install setuptools"
+                        sh "python3.8 setup.py sdist"
+						sh "curl -v -u ${nexusUsername}:${nexusPassword} --upload-file 'dist/*.tar.gz' '${nexusUrl}api-gateway'"
                     }
                 }
             }
