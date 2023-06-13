@@ -77,7 +77,7 @@ pipeline {
         //     }
         // }
 
-       stage('Publish to Nexus') {
+        stage('Publish to Nexus') {
             steps {
                 script {
                     def nexusUsername = 'admin'
@@ -87,29 +87,30 @@ pipeline {
                     dir('auth-django') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh 'curl -v -u admin:admin --upload-file "dist/*.tar.gz" http://172.10.0.140:8081/repository/auth-service'
+                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}auth-service \\;"
                     }
 
                     dir('forum-service') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh 'curl -v -u admin:admin --upload-file "dist/*.tar.gz" http://172.10.0.140:8081/repository/forum-service'
+                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}forum-service \\;"
                     }
 
                     dir('task-service') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh 'curl -v -u admin:admin --upload-file "dist/*.tar.gz" http://172.10.0.140:8081/repository/task-service'
+                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}task-service \\;"
                     }
 
                     dir('api-gateway') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh 'curl -v -u admin:admin --upload-file "dist/*.tar.gz" http://172.10.0.140:8081/repository/api-gateway'
+                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}api-gateway \\;"
                     }
                 }
             }
         }
+
 
 
 
