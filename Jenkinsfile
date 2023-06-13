@@ -87,29 +87,31 @@ pipeline {
                     dir('auth-django') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}auth-service \\;"
+                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}auth-service/ \\;"
                     }
 
                     dir('forum-service') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}forum-service \\;"
+                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}forum-service/ \\;"
                     }
 
                     dir('task-service') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}task-service \\;"
+                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}task-service/ \\;"
                     }
 
                     dir('api-gateway') {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
-                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}api-gateway \\;"
+                        sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}api-gateway/ \\;"
                     }
                 }
             }
         }
+
+
 
 
 
