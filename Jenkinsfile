@@ -83,56 +83,33 @@ pipeline {
                     def nexusUsername = 'admin'
                     def nexusPassword = 'admin'
                     def nexusUrl = "http://172.10.0.140:8081/repository/"
-
-                    // dir('auth-django') {
-                    //     sh "python3.8 -m pip install setuptools"
-                    //     sh "python3.8 setup.py sdist"
-                    //     sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}auth-service/ \\;"
-                    // }
-
-                    // dir('forum-service') {
-                    //     sh "python3.8 -m pip install setuptools"
-                    //     sh "python3.8 setup.py sdist"
-                    //     sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}forum-service/ \\;"
-                    // }
-
-                    // dir('task-service') {
-                    //     sh "python3.8 -m pip install setuptools"
-                    //     sh "python3.8 setup.py sdist"
-                    //     sh "find dist -name '*.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}task-service/ \\;"
-                    // }
-
-                    // dir('api-gateway') {
-                    //     sh "python3.8 -m pip install setuptools"
-                    //     sh "python3.8 setup.py sdist"
-                    //     sh "find dist -name 'api-gateway-1.0.tar.gz' -exec curl -v -u admin:admin --upload-file {} ${nexusUrl}api-gateway/ \\;"
-                    // }
-
-                    dir('api-gateway') {
-                        sh "python3.8 -m pip install setuptools"
-                        sh "python3.8 setup.py sdist"
+                    
+                    withEnv(["PATH+VENVPATH=venv/bin"]) {
+                        sh "python3.8 -m venv venv"
+                        sh "source venv/bin/activate && pip install twine"
                         
-                        // Vérification de l'existence du fichier tar.gz
-                        script {
-                            def tarFile = sh(returnStdout: true, script: "find dist -name 'api-gateway-1.0.tar.gz'")
-                            tarFile = tarFile.trim()
-                            if (tarFile) {
-                                // Le fichier tar.gz existe
-                                sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
-                                // sh "curl -v -u admin:admin --upload-file ${tarFile} ${nexusUrl}api-gateway/"
-                                sh "twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
-
-                            } else {
-                                // Le fichier tar.gz n'existe pas
-                                sh "echo 'Le fichier api-gateway-1.0.tar.gz est introuvable.'"
+                        dir('api-gateway') {
+                            sh "python3.8 -m pip install setuptools"
+                            sh "python3.8 setup.py sdist"
+                            
+                            // Vérification de l'existence du fichier tar.gz
+                            script {
+                                def tarFile = sh(returnStdout: true, script: "find dist -name 'api-gateway-1.0.tar.gz'").trim()
+                                if (tarFile) {
+                                    // Le fichier tar.gz existe
+                                    sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
+                                    sh "twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
+                                } else {
+                                    // Le fichier tar.gz n'existe pas
+                                    sh "echo 'Le fichier api-gateway-1.0.tar.gz est introuvable.'"
+                                }
                             }
                         }
                     }
-
-
                 }
             }
         }
+
 
 
 
