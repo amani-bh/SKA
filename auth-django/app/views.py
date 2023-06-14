@@ -19,6 +19,9 @@ from django.urls import reverse
 from .tokens import account_activation_token
 
 
+user_not_found='user not found'
+
+
 class RegisterAPIView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -168,7 +171,7 @@ class ImageUploadView(APIView):
             user.save()
             return Response(UserSerializer(user).data)
         except User.DoesNotExist:
-            return Response({'error': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': user_not_found}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateProfile(APIView):
@@ -186,7 +189,7 @@ class UpdateProfile(APIView):
             user = serializer.save()
             return Response(UserSerializer(user).data)
         except User.DoesNotExist:
-            return Response({'error': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': user_not_found}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdatePassword(APIView):
@@ -200,18 +203,7 @@ class UpdatePassword(APIView):
             serializer.update_password(user, serializer.validated_data)
             return Response({'message': 'Password updated successfully!'}, status=status.HTTP_200_OK)
         except User.DoesNotExist:
-            return Response({'error': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserAPIView(APIView):
-    def get(self, request):
-        auth = get_authorization_header(request).split()
-        if auth and len(auth) == 2:
-            token = auth[1].decode('utf-8')
-            user_id = decode_access_token(token)
-            user = User.objects.filter(pk=user_id).first()
-            return Response(UserSerializer(user).data)
-        raise AuthenticationFailed('unauthenticated')
+            return Response({'error': user_not_found}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -222,7 +214,6 @@ def get_user(request, id):
 
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
 
 
 @api_view(['GET'])
