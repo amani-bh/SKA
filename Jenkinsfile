@@ -6,7 +6,7 @@ pipeline {
         registryForum = "amanibh/forum-service" 
         registryTask = "amanibh/task-service" 
         registryGateway = "amanibh/gateway" 
-        registryCredential = 'dockerHub'
+        registryCredential = 'DockerHubSKA'
         dockerImage = ''
     }
 
