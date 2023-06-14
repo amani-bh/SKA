@@ -86,7 +86,7 @@ pipeline {
                     
                     withEnv(["PATH+VENVPATH=venv/bin"]) {
                         sh "python3.8 -m venv venv"
-                        sh "source venv/bin/activate && pip install twine"
+                        sh "source venv/bin/activate && pip install cryptography twine"
                         
                         dir('api-gateway') {
                             sh "python3.8 -m pip install setuptools"
