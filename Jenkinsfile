@@ -84,25 +84,37 @@ pipeline {
                     def nexusPassword = 'admin'
                     def nexusUrl = "http://172.10.0.140:8081/repository/"
                     
-                    withEnv(["PATH+VENVPATH=venv/bin"]) {
-                        sh "python3.8 -m venv venv"
-                        sh "source venv/bin/activate && pip install twine"
+                    sh "python3.8 -m venv venv"
+                    sh """
+                        source ${env.WORKSPACE}/venv/bin/activate
+                        pip install --upgrade pip
+                        pip install cryptography twine
+                    """
+                    
+                    dir('api-gateway') {
+                        sh """
+                            source ${env.WORKSPACE}/venv/bin/activate
+                            python3.8 -m pip install setuptools
+                            python3.8 setup.py sdist
+                        """
                         
-                        dir('api-gateway') {
-                            sh "python3.8 -m pip install setuptools"
-                            sh "python3.8 setup.py sdist"
+                        // Vérification de l'existence du fichier tar.gz
+                        script {
+                            def tarFile = sh(
+                                returnStdout: true,
+                                script: "find ${env.WORKSPACE}/api-gateway/dist -name 'api-gateway-1.0.tar.gz'"
+                            ).trim()
                             
-                            // Vérification de l'existence du fichier tar.gz
-                            script {
-                                def tarFile = sh(returnStdout: true, script: "find dist -name 'api-gateway-1.0.tar.gz'").trim()
-                                if (tarFile) {
-                                    // Le fichier tar.gz existe
-                                    sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
-                                    sh "twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
-                                } else {
-                                    // Le fichier tar.gz n'existe pas
-                                    sh "echo 'Le fichier api-gateway-1.0.tar.gz est introuvable.'"
-                                }
+                            if (tarFile) {
+                                // Le fichier tar.gz existe
+                                sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
+                                sh """
+                                    source ${env.WORKSPACE}/venv/bin/activate
+                                    twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin ${tarFile}
+                                """
+                            } else {
+                                // Le fichier tar.gz n'existe pas
+                                sh "echo 'Le fichier api-gateway-1.0.tar.gz est introuvable.'"
                             }
                         }
                     }
