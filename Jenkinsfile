@@ -83,6 +83,7 @@ pipeline {
                     def nexusUsername = 'admin'
                     def nexusPassword = 'admin'
                     def nexusUrl = "http://172.10.0.140:8081/repository/"
+                    sh "python3.8 -m pip install twine"
 
                     
                     dir('api-gateway') {
