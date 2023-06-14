@@ -105,12 +105,12 @@ pipeline {
                         sh "python3.8 -m pip install setuptools"
                         sh "python3.8 setup.py sdist"
                         script {
-                            def tarFile = sh(returnStdout: true, script: "find dist -name 'auth-server-1.0.tar.gz'").trim()
+                            def tarFile = sh(returnStdout: true, script: "find dist -name 'auth-service-1.0.tar.gz'").trim()
                             if (tarFile) {
-                                sh "echo 'Uploading auth-server-1.0.tar.gz to Nexus repository...'"
-                                sh "python3.8 -m twine upload --repository-url ${nexusUrl}auth-server/ --username admin --password admin dist/auth-server-1.0.tar.gz"
+                                sh "echo 'Uploading auth-service-1.0.tar.gz to Nexus repository...'"
+                                sh "python3.8 -m twine upload --repository-url ${nexusUrl}auth-service/ --username admin --password admin dist/auth-service-1.0.tar.gz"
                             } else {
-                                sh "echo 'The auth-server-1.0.tar.gz file is not found.'"
+                                sh "echo 'The auth-service-1.0.tar.gz file is not found.'"
                             }
                         }
                     }
