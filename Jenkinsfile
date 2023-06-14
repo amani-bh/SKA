@@ -86,7 +86,7 @@ pipeline {
                     
                     sh "python3.8 -m venv venv"
                     sh "source venv/bin/activate && pip install twine"
-                    sh "pip install urllib3==1.26.*" // Downgrade urllib3
+                    sh "source venv/bin/activate && venv/bin/pip install urllib3==1.26.*" // Downgrade urllib3
                     
                     dir('api-gateway') {
                         sh "python3.8 -m pip install setuptools"
@@ -108,6 +108,7 @@ pipeline {
                 }
             }
         }
+
 
 
 
