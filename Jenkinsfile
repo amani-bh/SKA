@@ -5,7 +5,7 @@ pipeline {
         registryForum = "amanibh/forum-service" 
         registryTask = "amanibh/task-service" 
         registryGateway = "amanibh/gateway" 
-        registryCredential = '6c47a539-ac8d-437b-bc40-4bad2be5132e'
+        registryCredential = 'dockerHub'
         dockerImage = ''
     }
     agent any
