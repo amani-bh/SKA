@@ -96,45 +96,45 @@ pipeline {
         //             sh "python3.8 -m pip install twine"
 
                     
-                    dir('api-gateway') {
-                        sh "python3.8 -m pip install setuptools"
-                        sh "python3.8 setup.py sdist"
-                        script {
-                            def tarFile = sh(returnStdout: true, script: "find dist -name 'api-gateway-1.0.tar.gz'").trim()
-                            if (tarFile) {
-                                sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
-                                sh "python3.8 -m twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
-                            } else {
-                                sh "echo 'The api-gateway-1.0.tar.gz file is not found.'"
-                            }
-                        }
-                    }
-                    dir('auth-django') {
-                        sh "python3.8 -m pip install setuptools"
-                        sh "python3.8 setup.py sdist"
-                        script {
-                            def tarFile = sh(returnStdout: true, script: "find dist -name 'auth-service-1.0.tar.gz'").trim()
-                            if (tarFile) {
-                                sh "echo 'Uploading auth-service-1.0.tar.gz to Nexus repository...'"
-                                sh "python3.8 -m twine upload --repository-url ${nexusUrl}auth-service/ --username admin --password admin dist/auth-service-1.0.tar.gz"
-                            } else {
-                                sh "echo 'The auth-service-1.0.tar.gz file is not found.'"
-                            }
-                        }
-                    }
-                    dir('task-service') {
-                        sh "python3.8 -m pip install setuptools"
-                        sh "python3.8 setup.py sdist"
-                        script {
-                            def tarFile = sh(returnStdout: true, script: "find dist -name 'task-service-1.0.tar.gz'").trim()
-                            if (tarFile) {
-                                sh "echo 'Uploading task-service-1.0.tar.gz to Nexus repository...'"
-                                sh "python3.8 -m twine upload --repository-url ${nexusUrl}task-service/ --username admin --password admin dist/task-service-1.0.tar.gz"
-                            } else {
-                                sh "echo 'The task-service-1.0.tar.gz file is not found.'"
-                            }
-                        }
-                    }
+        //             dir('api-gateway') {
+        //                 sh "python3.8 -m pip install setuptools"
+        //                 sh "python3.8 setup.py sdist"
+        //                 script {
+        //                     def tarFile = sh(returnStdout: true, script: "find dist -name 'api-gateway-1.0.tar.gz'").trim()
+        //                     if (tarFile) {
+        //                         sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
+        //                         sh "python3.8 -m twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
+        //                     } else {
+        //                         sh "echo 'The api-gateway-1.0.tar.gz file is not found.'"
+        //                     }
+        //                 }
+        //             }
+        //             dir('auth-django') {
+        //                 sh "python3.8 -m pip install setuptools"
+        //                 sh "python3.8 setup.py sdist"
+        //                 script {
+        //                     def tarFile = sh(returnStdout: true, script: "find dist -name 'auth-service-1.0.tar.gz'").trim()
+        //                     if (tarFile) {
+        //                         sh "echo 'Uploading auth-service-1.0.tar.gz to Nexus repository...'"
+        //                         sh "python3.8 -m twine upload --repository-url ${nexusUrl}auth-service/ --username admin --password admin dist/auth-service-1.0.tar.gz"
+        //                     } else {
+        //                         sh "echo 'The auth-service-1.0.tar.gz file is not found.'"
+        //                     }
+        //                 }
+        //             }
+        //             dir('task-service') {
+        //                 sh "python3.8 -m pip install setuptools"
+        //                 sh "python3.8 setup.py sdist"
+        //                 script {
+        //                     def tarFile = sh(returnStdout: true, script: "find dist -name 'task-service-1.0.tar.gz'").trim()
+        //                     if (tarFile) {
+        //                         sh "echo 'Uploading task-service-1.0.tar.gz to Nexus repository...'"
+        //                         sh "python3.8 -m twine upload --repository-url ${nexusUrl}task-service/ --username admin --password admin dist/task-service-1.0.tar.gz"
+        //                     } else {
+        //                         sh "echo 'The task-service-1.0.tar.gz file is not found.'"
+        //                     }
+        //                 }
+        //             }
 
         //             dir('forum-service') {
         //                 sh "python3.8 -m pip install setuptools"
