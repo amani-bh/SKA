@@ -1,4 +1,5 @@
 pipeline {
+    
     environment {
         registryAuth = "amanibh/auth-service" 
         registryChat = "amanibh/chat-service" 
