@@ -220,7 +220,7 @@ pipeline {
 			steps {
 				sh "docker rmi $registryChat:$BUILD_NUMBER"
 				sh "docker rmi $registryGateway:$BUILD_NUMBER"
-				sh "docker rmi $registryChat:$BUILD_NUMBER"
+				sh "docker rmi $registryForum:$BUILD_NUMBER"
 				sh "docker rmi $registryTask:$BUILD_NUMBER"
 				sh "docker rmi $registryAuth:$BUILD_NUMBER"
 			}
