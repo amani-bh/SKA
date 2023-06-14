@@ -181,38 +181,37 @@ pipeline {
         stage('Building and Deploy images') {
 			steps {
 				script {
-					dockerImage = docker.build registryAuth + ":$BUILD_NUMBER"
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
-					}
-				}
-
-                script {
-					dockerImage = docker.build registryForum + ":$BUILD_NUMBER"
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
-					}
-				}
-
-                script {
-					dockerImage = docker.build registryChat + ":$BUILD_NUMBER"
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
-					}
-				}
-
-                script {
-					dockerImage = docker.build registryTask + ":$BUILD_NUMBER"
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
-					}
-				}
-
-                script {
-					dockerImage = docker.build registryGateway + ":$BUILD_NUMBER"
-                    docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
-					}
+                    dir('auth-django'){
+                        dockerImage = docker.build registryAuth + ":$BUILD_NUMBER"
+                        docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                        }
+                    }
+                    dir('forum-service'){
+                        dockerImage = docker.build registryForum + ":$BUILD_NUMBER"
+                        docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                        }
+                    }
+                    dir('task-service'){
+                        dockerImage = docker.build registryTask + ":$BUILD_NUMBER"
+                        docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                        }
+                    }
+                    dir('chat-service'){
+                        dockerImage = docker.build registryChat + ":$BUILD_NUMBER"
+                        docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                        }
+                    }
+                    dir('api-gateway'){
+                        dockerImage = docker.build registryGateway + ":$BUILD_NUMBER"
+                        docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                        }
+                    }
+					
 				}
             }
 		}
