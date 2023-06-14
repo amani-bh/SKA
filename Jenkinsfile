@@ -83,8 +83,6 @@ pipeline {
                     def nexusUsername = 'admin'
                     def nexusPassword = 'admin'
                     def nexusUrl = "http://172.10.0.140:8081/repository/"
-                    sh "python3.8 -m ensurepip"
-                    sh "python3.8 -m pip install twine"
 
                     
                     dir('api-gateway') {
@@ -97,7 +95,7 @@ pipeline {
                             if (tarFile) {
                                 // The tar.gz file exists
                                 sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
-                                sh "twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
+                                sh "python3.8 -m twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
                             } else {
                                 // The tar.gz file does not exist
                                 sh "echo 'The api-gateway-1.0.tar.gz file is not found.'"
