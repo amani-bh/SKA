@@ -84,32 +84,31 @@ pipeline {
                     def nexusPassword = 'admin'
                     def nexusUrl = "http://172.10.0.140:8081/repository/"
                     
-                    withEnv(["PATH+VENVPATH=venv/bin"]) {
-                        sh "python3.8 -m venv venv"
-                        sh "source venv/bin/activate && pip install twine"
-                        sh "pip install urllib3==1.26.*" // Downgrade urllib3
+                    sh "python3.8 -m venv venv"
+                    sh "source venv/bin/activate && pip install twine"
+                    sh "pip install urllib3==1.26.*" // Downgrade urllib3
+                    
+                    dir('api-gateway') {
+                        sh "python3.8 -m pip install setuptools"
+                        sh "python3.8 setup.py sdist"
                         
-                        dir('api-gateway') {
-                            sh "python3.8 -m pip install setuptools"
-                            sh "python3.8 setup.py sdist"
-                            
-                            // Check if the tar.gz file exists
-                            script {
-                                def tarFile = sh(returnStdout: true, script: "find dist -name 'api-gateway-1.0.tar.gz'").trim()
-                                if (tarFile) {
-                                    // The tar.gz file exists
-                                    sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
-                                    sh "source venv/bin/activate && twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
-                                } else {
-                                    // The tar.gz file does not exist
-                                    sh "echo 'The api-gateway-1.0.tar.gz file is not found.'"
-                                }
+                        // Check if the tar.gz file exists
+                        script {
+                            def tarFile = sh(returnStdout: true, script: "find dist -name 'api-gateway-1.0.tar.gz'").trim()
+                            if (tarFile) {
+                                // The tar.gz file exists
+                                sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
+                                sh "source venv/bin/activate && venv/bin/twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
+                            } else {
+                                // The tar.gz file does not exist
+                                sh "echo 'The api-gateway-1.0.tar.gz file is not found.'"
                             }
                         }
                     }
                 }
             }
         }
+
 
 
 
