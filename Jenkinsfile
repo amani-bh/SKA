@@ -94,7 +94,7 @@ pipeline {
                             if (tarFile) {
                                 // The tar.gz file exists
                                 sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
-                                sh "~/.local/bin/twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
+                                sh "/var/lib/jenkins/.local/bin/twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
                             } else {
                                 // The tar.gz file does not exist
                                 sh "echo 'The api-gateway-1.0.tar.gz file is not found.'"
@@ -104,6 +104,7 @@ pipeline {
                 }
             }
         }
+
 
 
 
