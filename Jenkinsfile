@@ -86,9 +86,8 @@ pipeline {
                     
                     withEnv(["PATH+VENVPATH=venv/bin"]) {
                         sh "python3.8 -m venv venv"
-                        sh "source venv/bin/activate  "
-                        sh "pip install --upgrade pip"
-                        sh "pip install cryptography twine"
+                        sh "source venv/bin/activate && pip install --upgrade pip"
+                        sh "source venv/bin/activate && pip install cryptography twine"
                         
                         dir('api-gateway') {
                             sh "python3.8 -m pip install setuptools"
@@ -100,7 +99,7 @@ pipeline {
                                 if (tarFile) {
                                     // Le fichier tar.gz existe
                                     sh "echo 'Uploading api-gateway-1.0.tar.gz to Nexus repository...'"
-                                    sh "twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
+                                    sh "source venv/bin/activate && twine upload --repository-url ${nexusUrl}api-gateway/ --username admin --password admin dist/api-gateway-1.0.tar.gz"
                                 } else {
                                     // Le fichier tar.gz n'existe pas
                                     sh "echo 'Le fichier api-gateway-1.0.tar.gz est introuvable.'"
@@ -111,6 +110,7 @@ pipeline {
                 }
             }
         }
+
 
 
 
