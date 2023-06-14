@@ -8,7 +8,13 @@ pipeline {
         registryCredential = 'dockerHub'
         dockerImage = ''
     }
+
+    triggers {
+        githubPush()
+    }
+
     agent any
+
 
     stages {
         stage('Checkout') {
@@ -216,15 +222,15 @@ pipeline {
             }
 		}
 
-        stage('Cleaning up') {
-			steps {
-				sh "docker rmi $registryChat:$BUILD_NUMBER"
-				sh "docker rmi $registryGateway:$BUILD_NUMBER"
-				sh "docker rmi $registryForum:$BUILD_NUMBER"
-				sh "docker rmi $registryTask:$BUILD_NUMBER"
-				sh "docker rmi $registryAuth:$BUILD_NUMBER"
-			}
-		}
+        // stage('Cleaning up') {
+		// 	steps {
+		// 		sh "docker rmi $registryChat:$BUILD_NUMBER"
+		// 		sh "docker rmi $registryGateway:$BUILD_NUMBER"
+		// 		sh "docker rmi $registryForum:$BUILD_NUMBER"
+		// 		sh "docker rmi $registryTask:$BUILD_NUMBER"
+		// 		sh "docker rmi $registryAuth:$BUILD_NUMBER"
+		// 	}
+		// }
 
         stage("Docker-Compose") { 
               steps { 
