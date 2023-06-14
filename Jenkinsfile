@@ -182,31 +182,31 @@ pipeline {
 			steps {
 				script {
                     dir('auth-django'){
-                        dockerImage = docker.build registryAuth + ":$BUILD_NUMBER"
+                        dockerImage = sudo docker.build registryAuth + ":$BUILD_NUMBER"
                         docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                         }
                     }
                     dir('forum-service'){
-                        dockerImage = docker.build registryForum + ":$BUILD_NUMBER"
+                        dockerImage = sudo docker.build registryForum + ":$BUILD_NUMBER"
                         docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                         }
                     }
                     dir('task-service'){
-                        dockerImage = docker.build registryTask + ":$BUILD_NUMBER"
+                        dockerImage = sudo docker.build registryTask + ":$BUILD_NUMBER"
                         docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                         }
                     }
                     dir('chat-service'){
-                        dockerImage = docker.build registryChat + ":$BUILD_NUMBER"
+                        dockerImage = sudo docker.build registryChat + ":$BUILD_NUMBER"
                         docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                         }
                     }
                     dir('api-gateway'){
-                        dockerImage = docker.build registryGateway + ":$BUILD_NUMBER"
+                        dockerImage = sudo docker.build registryGateway + ":$BUILD_NUMBER"
                         docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                         }
