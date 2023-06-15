@@ -188,14 +188,14 @@ pipeline {
         stage('Building and Deploy images') {
 			steps {
 				script {
-                    dir('auth-django'){
-                        dockerImage = docker.build registryAuth + ":$BUILD_NUMBER"
+                    dir('forum-service'){
+                        dockerImage = docker.build registryForum + ":$BUILD_NUMBER"
                         docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                         }
                     }
-                    dir('forum-service'){
-                        dockerImage = docker.build registryForum + ":$BUILD_NUMBER"
+                    dir('auth-django'){
+                        dockerImage = docker.build registryAuth + ":$BUILD_NUMBER"
                         docker.withRegistry( '', registryCredential ) {
                         dockerImage.push()
                         }
