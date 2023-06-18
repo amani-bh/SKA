@@ -91,19 +91,19 @@ pipeline {
         stage('SonarQube') {
             steps {
                 dir('auth-django') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=auth-django'
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -X -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=auth-django'
                 }
                 dir('forum-service') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=forum-service'
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -X -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=forum-service'
                 }
                 dir('task-service') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=task-service'
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -X -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=task-service'
                 }
                 dir('chat-service') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=chat-service'
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -X -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=chat-service'
                 }
                 dir('api-gateway') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=api-gateway'
+                    sh '/opt/sonar-scanner/bin/sonar-scanner -X -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.projectKey=api-gateway'
                 }
             }
         }
