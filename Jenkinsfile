@@ -11,9 +11,9 @@ pipeline {
         dockerImage = ''
     }
 
-    // triggers {
-    //     githubPush()
-    // }
+    triggers {
+        githubPush()
+    }
 
     agent any
 
