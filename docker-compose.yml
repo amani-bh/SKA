@@ -8,20 +8,6 @@ services:
     ports:
       - 8761:8761
     image: "eureka-service"
-    
-  frontend:
-    build:
-      context: ./front
-      dockerfile: Dockerfile
-    ports:
-      - 3001:3001
-    depends_on:
-      - auth
-      - forum
-      - chat
-      - task
-    networks:
-      - app-network
       
   gateway:
     build:

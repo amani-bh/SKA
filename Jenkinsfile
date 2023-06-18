@@ -6,6 +6,7 @@ pipeline {
         registryForum = "amanibh/forum-service" 
         registryTask = "amanibh/task-service" 
         registryGateway = "amanibh/gateway" 
+		registryEureka = "amanibh/eureka-server"
         registryCredential = 'dockerHub'
         dockerImage = ''
     }
@@ -26,6 +27,10 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
+				dir('Eureka-Server'){
+				    sh' mvn clean install -DskipTests'
+					sh' mvn compile'
+				}
                 dir('auth-django') {
                     sh 'python3.8 -m pip install --user -r requirements.txt'
                 }
@@ -188,6 +193,13 @@ pipeline {
         stage('Building and Deploy images') {
 			steps {
 				script {
+				
+				    dir('Eureka-Server'){
+                        dockerImage = docker.build registryEureka + ":$BUILD_NUMBER"
+                        docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                        }
+                    }
                     dir('forum-service'){
                         dockerImage = docker.build registryForum + ":$BUILD_NUMBER"
                         docker.withRegistry( '', registryCredential ) {
