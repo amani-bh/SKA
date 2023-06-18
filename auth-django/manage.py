@@ -7,9 +7,9 @@ import py_eureka_client.eureka_client as eureka_client
 
 def eureka_init():
     eureka_client.init(
-        eureka_server="http://localhost:8761",
+        eureka_server="http://172.10.0.140:8761",
         app_name="auth-service",
-        instance_host="localhost",
+        instance_host="172.10.0.140",
         instance_port=8002,
     )
 
