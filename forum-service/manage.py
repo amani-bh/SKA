@@ -7,9 +7,9 @@ import py_eureka_client.eureka_client as eureka_client
 
 def eureka_init():
     eureka_client.init(
-        eureka_server="http://172.10.0.140:8761",
+        eureka_server="http://localhost:8761",
         app_name="forum-service",
-        instance_host="172.10.0.140",
+        instance_host="localhost",
         instance_port=8001,
     )
 
@@ -29,5 +29,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
     eureka_init()
+    main()
