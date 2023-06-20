@@ -78,6 +78,7 @@ services:
       - auth_postgres_data:/var/lib/postgresql/data/
     networks:
       - app-network
+    command: ["-c", "config_file=/usr/pgsql-14/bin/postgresql.conf"]
 
   forum-db:
     image: postgres:13
@@ -89,6 +90,7 @@ services:
       - forum_postgres_data:/var/lib/postgresql/data/
     networks:
       - app-network
+    command: ["-c", "config_file=/usr/pgsql-14/bin/postgresql.conf"]
 
   chat-db:
     image: postgres:13
@@ -100,6 +102,7 @@ services:
       - chat_postgres_data:/var/lib/postgresql/data/
     networks:
       - app-network
+    command: ["-c", "config_file=/usr/pgsql-14/bin/postgresql.conf"]
 
   task-db:
     image: postgres:13
@@ -111,6 +114,7 @@ services:
       - task_postgres_data:/var/lib/postgresql/data/
     networks:
       - app-network
+    command: ["-c", "config_file=/usr/pgsql-14/bin/postgresql.conf"]
 
 volumes:
   auth_postgres_data:
